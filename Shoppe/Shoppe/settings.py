@@ -37,8 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'account',
     'blog',
+    'home',
+    'product',
+    'users',
+    'country',
+    
     
 ]
 
@@ -79,7 +83,7 @@ WSGI_APPLICATION = 'Shoppe.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'final_project',
+        'NAME': 'final-project-main',
         'USER':'root',
         'PASSWORD':'',
         'HOST':'127.0.0.1',
@@ -128,7 +132,7 @@ STATICFILES_DIRS = [
 ]
 MEDIA_URL ='/media/'
 MEDIA_ROOT =BASE_DIR/'media'
-AUTH_USER_MODEL ='account.UserCustomer'
+AUTH_USER_MODEL ='users.UserCustomer'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
