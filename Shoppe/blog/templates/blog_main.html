@@ -1,0 +1,87 @@
+{% extends 'base.html' %} {% load static %} {% block 'content' %}
+<section>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3">
+      {% include 'left_sidebar.html' %}
+      </div>
+      <div class="col-sm-9">
+        <div class="blog-post-area">
+          <h2 class="title text-center">BLog</h2>
+          {% for blog in page_obj %}
+          <div class="single-blog-post">
+            <h3>{{ blog.description}}</h3>
+            <div class="post-meta">
+              <ul>
+                <li><i class="fa fa-user"></i>{{ blog.author}}</li>
+                <li>
+                  <i class="fa fa-clock-o"></i>{{ blog.created_at|date:'H:i'}}
+                </li>
+                <li>
+                  <i class="fa fa-calendar"></i>{{ blog.created_at|date:'d/m/Y'}}
+                </li>
+              </ul>
+              <span>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star"></i>
+                <i class="fa fa-star-half-o"></i>
+              </span>
+            </div>
+            <a href="{% url 'blog:BlogDetail' blog.id %}">
+              <img src="{{blog.image.url}}" alt="" />
+            </a>
+            <p>{{ blog.content}}</p>
+            <a class="btn btn-primary" href="{% url 'blog:BlogDetail' blog.id %}">Read More</a>
+          </div>
+          {% endfor %}
+
+          <div class="pagination-area">
+            <ul class="pagination">
+              {% if page_obj.has_previous %}
+              <li>
+                <a href="?page=1">
+                  <i class="fa fa-angle-double-left"></i>
+                </a>
+              </li>
+
+              <li>
+                <a href="?page={{ page_obj.previous_page_number }}">
+                  <i class="fa fa-angle-left"></i>
+                </a>
+              </li>
+              {% endif %}   
+              {% for num in page_obj.paginator.page_range %} 
+                {% if page_obj.number == num %}
+              <li>
+                <a href="?page={{ num }}" class="active">{{ num }}</a>
+              </li>
+
+                {% elif num > page_obj.number|add:"-2" and num < page_obj.number|add:"2" %}
+              <li>
+                <a href="?page={{ num }}">{{ num }}</a>
+              </li>
+                {% endif %} 
+              {% endfor %} 
+              {% if page_obj.has_next %}
+              <li>
+                <a href="?page={{ page_obj.next_page_number }}">
+                  <i class="fa fa-angle-right"></i>
+                </a>
+              </li>
+
+              <li>
+                <a href="?page={{ page_obj.paginator.num_pages }}">
+                  <i class="fa fa-angle-double-right"></i>
+                </a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
