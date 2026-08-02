@@ -3,11 +3,11 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="" />
     <meta name="author" content="" />
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home | E-Shopper</title>
-    {% block 'css' %}
+    {% block css %}
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet" />
     <link href="{% static 'css/prettyPhoto.css' %}" rel="stylesheet" />
@@ -41,20 +41,7 @@
       href="{% static 'images/ico/apple-touch-icon-57-precomposed.png' %}"
     />
     {% endblock %}
-  </head>
-  <body>
-    {% block 'header' %} {% include 'header.html' %} {% endblock %}
-
-    <section id="slider">
-      <!--slider-->
-      <div class="container">
-        <div class="row">{% block 'content' %} {% endblock %}</div>
-      </div>
-    </section>
-    <!--/slider-->
-
-    {% block 'footer' %} {% include 'footer.html'%} {% endblock %}
-    {% block 'js' %}
+      {% block js %}
     <script src="{% static 'js/jquery.js' %} "></script>
     <script src="{% static 'js/bootstrap.min.js' %}  "></script>
     <script src="{% static 'js/jquery.scrollUp.min.js' %}  "></script>
@@ -62,5 +49,29 @@
     <script src="{% static 'js/jquery.prettyPhoto.js' %}  "></script>
     <script src="{% static 'js/main.js' %}  "></script>
     {% endblock %}
+  </head>
+  <body>
+    {% block header %} {% include 'header.html' %} {% endblock %}
+
+    <section id="slider">
+      <!--slider-->
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-3">{% include 'left_sidebar.html' %}</div>
+          <div class="col-sm-9">
+            <div class="blog-post-area">
+              <h2 class="title text-center">Latest From our Blog</h2>
+              <div class="single-blog-post">
+              {% block content %} {% endblock %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--/slider-->
+
+    {% block footer %} {% include 'footer.html' %} {% endblock %} 
+  
   </body>
 </html>
