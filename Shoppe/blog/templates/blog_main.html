@@ -3,7 +3,19 @@
 {% endblock %} {% block js %} {{ block.super }}
 <script src="{% static 'rate/js/rate.js' %}"></script>
 <script>
+  
   $(document).ready(function () {
+    $('.rate').each(function(){
+      let rateDiv =$(this)
+      let rateAvg = rateDiv.data('rate-avg')
+      let stars = rateDiv.find('.ratings_stars')
+      stars.each(function(){
+        let starValue = $(this).find('input').val()
+        if (starValue <= rateAvg){
+          $(this).addClass('ratings_over')
+        }
+      })
+    });
     $(".ratings_stars").hover(
       function () {
         $(this).prevAll().andSelf().addClass("ratings_hover");
@@ -36,16 +48,44 @@
           success:function(data){
             if (data.success){
               alert('cảm ơn bạn đã đánh giá')
+              rate_tb =Number(data.rate_avg)
               
             }else{
               alert(data.err)
             }
+            $('.')
           }
         })
       } else {
         alert("vui lòng đăng nhập để đánh giá");
       }
     });
+    $.ajax({
+          type:'POST',
+          headers:{
+            'X-CSRFToken':'{{ csrf_token }}'
+          },
+          url:'/blog/rate/',
+          data:{
+            rate:value,
+            id_blog:id_blog
+          },
+          success:function(data){
+            let rates = document.getElementsByClassName('ratings_stars')
+            for(let i=0 ;i < rates.length;i++){
+              value = Number(rates[i].querySelector('input').value)
+              if(value<= data.rate_avg){
+                rates[i].classList.add('ratings_over')
+                
+              }else{
+                rates[i].classList.remove('ratings_over')
+              }
+             
+            }
+          }
+        })
+    
+            
   });
 </script>
 {% endblock %} {% block content %} 
@@ -59,7 +99,7 @@
       <li><i class="fa fa-calendar"></i>{{ blog.created_at|date:'d/m/Y'}}</li>
     </ul>
 
-    <div class="rate" data-blog-id="{{blog.id}}">
+    <div class="rate" data-blog-id="{{blog.id}}" data-rate-avg ='{{blog.rate_avg}}'>
       <span class="vote">
         <div class="star_1 ratings_stars">
           <input value="1" type="hidden" />
