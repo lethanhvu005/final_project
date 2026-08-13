@@ -14,4 +14,13 @@ class Rate(models.Model):
     rate = models.IntegerField(blank=True,null=True)
     blog = models.ForeignKey(Blog,on_delete=SET_NULL,blank=True,null=True)
     user =models.ForeignKey(UserCustomer,on_delete=SET_NULL,blank=True,null=True)
-    
+class Comment(models.Model): 
+    cmt = models.TextField()
+    user = models.ForeignKey(UserCustomer,on_delete=SET_NULL, blank=True, null=True)
+    blog =models.ForeignKey(Blog,on_delete=SET_NULL, blank=True, null=True)
+    avatar = models.TextField(blank=True,null=True)
+    name_user=models.TextField()
+    level =models.IntegerField(default=0)
+    time = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        db_table='commentInBlog'
