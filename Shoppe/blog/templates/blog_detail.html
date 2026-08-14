@@ -44,154 +44,333 @@
             </div>
           </div>
         </div>
-       <div class="response-area">
-						<h2>{{count_comment}} RESPONSES</h2>
-						<ul class="media-list">
-              {% for blog_comment in blog_comments %}
-							<li class="media" data-blog-id ='{{blog.id}}' data-comment-id="{{blog_comment.id}}">
-								<a class="pull-left" href="#">
-									<img class="media-object" src="{{blog_comment.avatar.url}}" alt="">
-								</a>
-								<div class="media-body">
-									<ul class="sinlge-post-meta">
-										<li><i class="fa fa-user"></i>{{blog_comment.name_user}}</li>
-										<li><i class="fa fa-clock-o"></i>{{blog_comment.time|date:"H:i"}}</li>
-										<li><i class="fa fa-calendar"></i>{{blog_comment.time|date:"d/m/Y"}}</li>
-									</ul>
-									<p>{{blog_comment.cmt}}</p>
-									<a class="btn btn-primary replay" ><i class="fa fa-reply"></i>Replay</a>
-                  <div class="text-area" style="display:none;">
-									  <div class="blank-arrow">
-										  <label>{{request.user.username}}</label>
-									  </div>
-									  <textarea name="message" rows="11"></textarea>
-									  <a class="btn btn-primary post_comment_child" >post comment</a>
-								  </div>
-								</div>
-							</li>
-              
-              {% for comment in blog_comment.child %}
-              <li class="media second-media" data-blog-id='{{blog.id}}' data-comment-id="{{blog_comment.id}}">
-								<a class="pull-left" href="#">
-									<img class="media-object" src="{{ comment.avatar.url }}" alt="">
-								</a>
-								<div class="media-body">
-									<ul class="sinlge-post-meta">
-										<li><i class="fa fa-user"></i>{{comment.name_user}}</li>
-										<li><i class="fa fa-clock-o"></i>{{comment.time|date:'H:i'}}</li>
-										<li><i class="fa fa-calendar"></i>{{comment.time|date:'d/m/Y'}}</li>
-									</ul>
-									<p>{{comment.cmt}}</p>
-									<a class="btn btn-primary replay" ><i class="fa fa-reply"></i>Replay</a>
-                  <div class="text-area" style="display:none;">
-									  <div class="blank-arrow">
-										  <label>{{request.user.username}}</label>
-									  </div>
-									  <textarea name="message" rows="11"></textarea>
-									  <a class="btn btn-primary post_comment_child" >post comment</a>
-								  </div>
-								</div>
-							</li>
-              {% endfor %}
-              {% endfor %}
-              
+        <div class="response-area">
+          <h2>{{count_comment}} RESPONSES</h2>
+          <ul class="media-list">
+            {% for blog_comment in blog_comments %}
+            <li
+              class="media"
+              data-blog-id="{{blog.id}}"
+              data-comment-id="{{blog_comment.id}}"
+            >
+              <a class="pull-left" href="#">
+                <img
+                  class="media-object"
+                  style="
+                    width: 100px !important;
+                    height: 100px !important;
+                    max-width: 100px !important;
+                    object-fit: cover;
+                    border-radius: 50%;
+                    display: block;
+                  "
+                  src="/media/{{blog_comment.avatar}}"
+                  alt=""
+                />
+              </a>
+              <div class="media-body">
+                <ul class="sinlge-post-meta">
+                  <li><i class="fa fa-user"></i>{{blog_comment.name_user}}</li>
+                  <li>
+                    <i class="fa fa-clock-o"></i
+                    >{{blog_comment.time|date:"H:i"}}
+                  </li>
+                  <li>
+                    <i class="fa fa-calendar"></i
+                    >{{blog_comment.time|date:"d/m/Y"}}
+                  </li>
+                </ul>
+                <p>{{blog_comment.cmt}}</p>
+                <a class="btn btn-primary replay"
+                  ><i class="fa fa-reply"></i>Replay</a
+                >
+                <div class="text-area" style="display: none">
+                  <div class="blank-arrow">
+                    <label>{{request.user.username}}</label>
+                  </div>
+                  <textarea name="message" rows="11"></textarea>
+                  <a class="btn btn-primary post_comment_child">post comment</a>
+                </div>
+              </div>
+            </li>
 
-						</ul>	
-					</div><!--/Response-area-->
-					<div class="replay-box">
-						<div class="row" data-blog-id="{{blog.id}}">
-							<div class="col-sm-12">
-								<h2>Leave a replay</h2>
-								
-								<div class="text-area">
-									<div class="blank-arrow">
-										<label>{{request.user.username}}</label>
-									</div>
-									<span>*</span>
-									<textarea name="message" rows="11"></textarea>
-									<a class="btn btn-primary post_comment" >post comment</a>
-								</div>
-							</div>
-						</div>
-					</div>
+            {% for comment in blog_comment.child %}
+            <li
+              class="media second-media"
+              data-blog-id="{{blog.id}}"
+              data-comment-id="{{blog_comment.id}}"
+            >
+              <a class="pull-left" href="#">
+                <img
+                  class="media-object"
+                  style="
+                    width: 100px !important;
+                    height: 100px !important;
+                    max-width: 100px !important;
+                    object-fit: cover;
+                    border-radius: 50%;
+                    display: block;
+                  "
+                  src="/media/{{ comment.avatar }}"
+                  alt=""
+                />
+              </a>
+              <div class="media-body">
+                <ul class="sinlge-post-meta">
+                  <li><i class="fa fa-user"></i>{{comment.name_user}}</li>
+                  <li>
+                    <i class="fa fa-clock-o"></i>{{comment.time|date:'H:i'}}
+                  </li>
+                  <li>
+                    <i class="fa fa-calendar"></i>{{comment.time|date:'d/m/Y'}}
+                  </li>
+                </ul>
+                <p>{{comment.cmt}}</p>
+                <a class="btn btn-primary replay"
+                  ><i class="fa fa-reply"></i>Replay</a
+                >
+                <div class="text-area" style="display: none">
+                  <div class="blank-arrow">
+                    <label>{{request.user.username}}</label>
+                  </div>
+                  <textarea name="message" rows="11"></textarea>
+                  <a class="btn btn-primary post_comment_child">post comment</a>
+                </div>
+              </div>
+            </li>
+            {% endfor %} {% endfor %}
+          </ul>
+        </div>
+        <!--/Response-area-->
+        <div class="replay-box">
+          <div class="row" data-blog-id="{{blog.id}}">
+            <div class="col-sm-12">
+              <h2>Leave a replay</h2>
+
+              <div class="text-area">
+                <div class="blank-arrow">
+                  <label>{{request.user.username}}</label>
+                </div>
+                <span>*</span>
+                <textarea name="message" rows="11"></textarea>
+                <a class="btn btn-primary post_comment">post comment</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 <script>
-  $('.post_comment').click(function(){
-    var checkLogin ='{{user.is_authenticated}}'
-    let row =$(this).closest('.row')
-    let id_blog=row.data('blog-id')
-    if(checkLogin =='True'){
-      comment = row.find('textarea').val()
-      console.log(id_blog)
-      console.log(comment)
-      $.ajax(
-      {
-        type : 'POST',
-        url:'/blog/comment/',
-        data:{
-          cmt:comment,
-          id_blog :id_blog,
+  $(".post_comment").click(function () {
+    var checkLogin = "{{user.is_authenticated}}";
+    let row = $(this).closest(".row");
+    let id_blog = row.data("blog-id");
+    if (checkLogin == "True") {
+      comment = row.find("textarea").val();
+      $.ajax({
+        type: "POST",
+        url: "/blog/comment/",
+        data: {
+          cmt: comment,
+          id_blog: id_blog,
         },
-        headers:{
-          "X-CSRFToken": "{{ csrf_token }}"
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
         },
-        success:function(data){
-          if(data.success){
-            alert('cảm ơn bạn đã comment')
-            location.reload()
+        error: function (xhr) {
+          console.log(xhr.status, xhr.responseText);
+        },
+        success: function (data) {
+          if (data.success) {
+            alert("cảm ơn bạn đã comment");
+            let avatarUrl = data.avatar ? `/media/${data.avatar}` : "";
+            let comment_at = ` <li class="media"
+                data-blog-id="${id_blog}"
+                data-comment-id="${data.id}">
 
-          }else{
-            alert(data.err)
+                <a class="pull-left" href="#">
+                    <img class="media-object" style="
+                      width: 100px !important;
+                      height: 100px !important;
+                      max-width: 100px !important;
+        object-fit: cover;
+        border-radius: 50%;
+        display: block;" 
+        src="${avatarUrl}" alt="">
+                </a>
+
+                <div class="media-body">
+
+                    <ul class="sinlge-post-meta">
+                        <li>
+                            <i class="fa fa-user"></i>
+                            ${data.username}
+                        </li>
+
+                        <li>
+                            <i class="fa fa-clock-o"></i>
+                            ${data.time}
+                        </li>
+
+                        <li>
+                            <i class="fa fa-calendar"></i>
+                            ${data.date}
+                        </li>
+                    </ul>
+
+                    <p>${data.cmt}</p>
+
+                    <a class="btn btn-primary replay">
+                        <i class="fa fa-reply"></i>Replay
+                    </a>
+
+                    <div class="text-area" style="display:none;">
+                        <div class="blank-arrow">
+                            <label>${data.username}</label>
+                        </div>
+
+                        <textarea name="message" rows="11"></textarea>
+
+                        <a class="btn btn-primary post_comment_child">
+                            post comment
+                        </a>
+                    </div>
+
+                </div>
+            </li>`;
+            $(".media-list").after(comment_at);
+            row.find("textarea").val("");
+          } else {
+            alert(data.err);
           }
+        },
+      });
+    } else {
+      alert("Bạn cần đăng nhập để comment");
+    }
+  });
+  $(document).on("click", ".replay", function (e) {
+    e.preventDefault();
+
+    const checkLogin = "{{ user.is_authenticated }}";
+
+    if (checkLogin !== "True") {
+      alert("Bạn cần đăng nhập để comment");
+      return;
+    }
+
+    const commentBox = $(this).closest(".media");
+    const textArea = commentBox.children(".media-body").children(".text-area");
+
+    $(this).hide();
+    textArea.show();
+  });
+
+  $(document).on("click", ".post_comment_child", function (e) {
+    e.preventDefault();
+    const postButton = $(this);
+    const commentBox = postButton.closest(".media");
+    const textArea = postButton.closest(".text-area");
+    const blog_id = commentBox.data("blog-id");
+    const id_cmt = commentBox.data("comment-id");
+    const cmt = textArea.find("textarea").val().trim();
+
+    if (!cmt) {
+      alert("Bạn chưa nhập nội dung comment");
+      return;
+    }
+    $.ajax({
+      type: "POST",
+      url: "/blog/comment_child/",
+      headers: {
+        "X-CSRFToken": "{{ csrf_token }}",
+      },
+      data: {
+        cmt: cmt,
+        id_blog: blog_id,
+        id_cmt: id_cmt,
+      },
+
+      success: function (data) {
+        if (!data.success) {
+          alert(data.err);
+          return;
         }
-      }
-      )
-    }else{
-      alert('Bạn cần đăng nhập để comment')
-    }
-  })
-  $('.replay').click(function(e){
-    var checkLogin ='{{user.is_authenticated}}'
-    if(checkLogin =='True'){
-      e.preventDefault()
-      let commentBox =$(this).closest('.media')
-      $(this).hide()
-      commentBox.find('.text-area').show()  
-      commentBox.find('.post_comment_child').click(function(){
-          let blog_id = commentBox.data('blog-id')
-          let id_cmt = commentBox.data('comment-id')
-          let cmt = commentBox.find('textarea').val()
-          $.ajax(
-            {
-              type:'POST',
-              url :'/blog/comment_child/',
-              headers:{
-                 "X-CSRFToken": "{{ csrf_token }}"
-              },
-              data:{
-                cmt:cmt,
-                id_blog:blog_id,
-                id_cmt:id_cmt
-              },
-              success:function(data){
-                if(data.success){
-                  alert('cảm ơn bạn đã trả lời')
-                  commentBox.find('.text-area').hide()
-                  commentBox.find('.replay').show()
-                }else{
-                  alert(data.err)
-                }
-              }
-            }
-          )
-      })
-  
-    }else{
-      alert('Bạn cần đăng nhập để comment')
-    }
-})
+        const avatarUrl = data.avatar ? `/media/${data.avatar}` : "";
+        const commentHtml = `
+                <li
+                    class="media second-media"
+                    data-blog-id="${blog_id}"
+                    data-comment-id="${id_cmt}"
+                >
+                    <a class="pull-left" href="#">
+                        <img
+                        style="
+        width: 100px !important;
+        height: 100px !important;
+        max-width: 100px !important;
+        object-fit: cover;
+        border-radius: 50%;
+        display: block;
+    "
+                            class="media-object"
+                            src="${avatarUrl}"
+                            alt=""
+                        >
+                    </a>
+
+                    <div class="media-body">
+                        <ul class="sinlge-post-meta">
+                            <li>
+                                <i class="fa fa-user"></i>
+                                ${data.username}
+                            </li>
+
+                            <li>
+                                <i class="fa fa-clock-o"></i>
+                                ${data.time}
+                            </li>
+
+                            <li>
+                                <i class="fa fa-calendar"></i>
+                                ${data.date}
+                            </li>
+                        </ul>
+
+                        <p>${data.cmt}</p>
+
+                        <a class="btn btn-primary replay">
+                            <i class="fa fa-reply"></i>
+                            Replay
+                        </a>
+
+                        <div class="text-area" style="display:none">
+                            <div class="blank-arrow">
+                                <label>${data.username}</label>
+                            </div>
+
+                            <textarea
+                                name="message"
+                                rows="11"
+                            ></textarea>
+
+                            <a class="btn btn-primary post_comment_child">
+                                post comment
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            `;
+        commentBox.after(commentHtml);
+        textArea.find("textarea").val("");
+        textArea.hide();
+        commentBox.children(".media-body").children(".replay").show();
+
+        alert("Cảm ơn bạn đã trả lời");
+      },
+    });
+  });
 </script>
 {% endblock %}

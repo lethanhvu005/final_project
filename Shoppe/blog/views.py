@@ -51,8 +51,15 @@ def CommentUser(request):
         avatar = request.user.avatar
         try:
             blog = Blog.objects.get(id=id_blog)
-            Comment.objects.create(cmt=cmt,blog=blog,user=user,name_user=username,avatar=avatar)
-            return JsonResponse({'success':True})
+            comment=Comment.objects.create(cmt=cmt,blog=blog,user=user,name_user=username,avatar=avatar)
+            return JsonResponse({'success':True,
+                                'id':comment.id,
+                                'cmt':comment.cmt,
+                                'username':comment.name_user,
+                                'avatar':str(comment.avatar),
+                                'time':comment.time.strftime('%H:%M'),
+                                'date':comment.time.strftime('%D/%M/%Y')})
+                                
         except Blog.DoesNotExist:
             return JsonResponse({'success':False,'err': 'Blog không tồn tại'})
 def CommentChild(request):
@@ -65,7 +72,13 @@ def CommentChild(request):
         avatar = request.user.avatar
         try:
             blog = Blog.objects.get(id=id_blog)
-            Comment.objects.create(cmt=cmt,blog=blog,user=user,name_user=username,avatar=avatar,level=id_cmt)
-            return JsonResponse({'success':True})
+            comment=Comment.objects.create(cmt=cmt,blog=blog,user=user,name_user=username,avatar=avatar,level=id_cmt)
+            return JsonResponse({'success':True,
+                                            'id':comment.id,
+                                            'cmt':comment.cmt,
+                                            'username':comment.name_user,
+                                            'avatar':str(comment.avatar),
+                                            'time':comment.time.strftime('%H:%M'),
+                                            'date':comment.time.strftime('%D/%M/%Y')})
         except Blog.DoesNotExist:
             return JsonResponse({'success':False,'err': 'Blog không tồn tại'})
