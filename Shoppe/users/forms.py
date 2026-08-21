@@ -7,7 +7,8 @@ class UserForm(forms.ModelForm):
         model = User
         fields =['username','email','password','confirmPassword','avatar','first_name','last_name','id_country']   
         widgets ={
-            'password':forms.PasswordInput()
+            'password':forms.PasswordInput(),
+            'avatar': forms.FileInput()
         }
     def clean(self):
         cleaned_data = super().clean()
@@ -17,5 +18,5 @@ class UserForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Xác nhận lại mật khẩu không đúng'
             )
-        
+     
     

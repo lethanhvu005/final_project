@@ -1,0 +1,61 @@
+{% extends 'base.html' %} {% load static %}{% block left_sidebar %} {% endblock%} {% block content %}
+<section class="list_product">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3">{% include 'menu_left_sidebar.html' %}</div>
+      <div class="col-sm-9">
+        <div class="table-responsive cart_info">
+          <table class="table table-condensed">
+            <thead>
+              <tr class="cart_menu">
+                <td class="image">image</td>
+                <td class="description">name</td>
+                <td class="price">price</td>
+
+                <td class="total">action</td>
+              </tr>
+            </thead>
+            <tbody>
+              {% for product in products%}
+              <tr>
+                <td class="cart_product">
+                  <a href=""
+                    ><img
+                      style="
+                        width: 100px !important;
+                        height: 100px !important;
+                        max-width: 100px !important;
+                        object-fit: cover;
+                        border-radius: 50%;
+                        display: block;
+                      "
+                      src="/media/{{product.image.0}}"
+                      alt=""
+                  /></a>
+                </td>
+                <td class="cart_description">
+                  <h4><a href="">{{product.name}}</a></h4>
+                </td>
+                <td class="cart_price">
+                  <p>${{product.price}}</p>
+                </td>
+                <td class="cart_total">
+                  <a id="">edit</a>
+                  <a id="">delete</a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <a  href="{% url 'product:add_product' %}"
+            class="btn btn-default add_product_bt"
+            style="background-color: rgb(205, 205, 6); color: aliceblue"
+            >Add Product</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
