@@ -40,8 +40,8 @@
                   <p>${{product.price}}</p>
                 </td>
                 <td class="cart_total">
-                  <a id="">edit</a>
-                  <a id="">delete</a>
+                  <a id="" href="{% url 'product:edit_product' product.id %}">edit</a>
+                  <a id=""href="{% url 'product:delete_product' product.id %}">delete</a>
                 </td>
               </tr>
               {% endfor %}

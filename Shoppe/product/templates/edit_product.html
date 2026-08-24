@@ -1,0 +1,76 @@
+{% extends 'base.html' %} {% load static %}{% block left_sidebar %} {%endblock%} {% block content %}
+<section class="add_product">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-3">{% include 'menu_left_sidebar.html' %}</div>
+      <div class="col-sm-9">
+        <div class="blog-post-area">
+          <h2 class="title text-center">Edit Product</h2>
+          <div class="signup-form">
+            <h2>Edit Product</h2>
+            <form
+              action="{% url 'product:edit_product' product.id %}"
+              method="POST"
+              id="edit_product"
+              enctype="multipart/form-data"
+            >
+              {% csrf_token %}{{ product_edit.as_p}}
+              <p>
+                <label for="id_images">Images:</label>
+                <input
+                  type="file"
+                  name="images"
+                  id="id_images"
+                  accept="image/jpeg,image/png"
+                  multiple
+                />
+              </p>
+              {% for error in image_err %}
+                <span style="color: red; display: block;">
+                  {{ error }}
+                </span>
+              {% endfor %}
+              <button type="submit" class="btn btn-default edit_product" id ='edit_product_bt'>
+                Edit Product
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+    $("#id_sale").closest("p").hide();
+  $("#id_status").change(function () {
+    let status_qr = $(this).val();
+    if (status_qr == "sale") {
+      $("#id_sale").closest("p").show();
+    } else {
+      $("#id_sale").closest("p").hide();
+      $("#id_sale").closest("p").val("");
+    }
+  });
+  $("#edit_product").submit(function (e) {
+    e.preventDefault();
+    const form = $(this);
+    let formData = new FormData(this);
+    $.ajax({
+      type: "POST",
+      url: form.attr("action"),
+      headers: {
+        "X-CSRFToken": "{{ csrf_token }}",
+      },
+      processData: false,
+      contentType: false,
+      data: formData,
+      success:function(data){
+        if(data.success){
+          alert('chỉnh sửa thành công')
+          window.location.href = data.redirect_url
+        }
+      }
+    });
+  });
+</script>
+{% endblock %}
