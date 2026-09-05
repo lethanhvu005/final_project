@@ -1,2 +1,88 @@
-{%  extends 'base.html' %}
-{% load static %}
+{% extends "base.html" %} {% load static %} {% block slidercarousel %}
+<div class="carousel-inner">
+  {% for product in products %}
+  <div class="item {% if forloop.first %}active{% endif %}">
+    <div class="col-sm-6">
+      <h1><span>E</span>-SHOPPER</h1>
+      <h2>{{ product.name }}</h2>
+      <p>{{ product.detail }}</p>
+
+      <button type="button" class="btn btn-default get">Get it now</button>
+    </div>
+
+    <div class="col-sm-6">
+      {% if product.image %}
+      <img
+        src="/media/{{ product.image.0 }}"
+        class="girl img-responsive"
+        alt="{{ product.name }}"
+      />
+      {% endif %}
+
+      <img
+        src="{% static 'images/home/pricing.png' %}"
+        class="pricing"
+        alt=""
+      />
+    </div>
+  </div>
+  {% empty %}
+  <div class="item active">
+    <p>Chưa có sản phẩm.</p>
+  </div>
+  {% endfor %}
+</div>
+
+<a
+  href="#slider-carousel"
+  class="left control-carousel hidden-xs"
+  data-slide="prev"
+>
+  <i class="fa fa-angle-left"></i>
+</a>
+
+<a
+  href="#slider-carousel"
+  class="right control-carousel hidden-xs"
+  data-slide="next"
+>
+  <i class="fa fa-angle-right"></i>
+</a>
+{% endblock %} {% block content %} {% for product in products%}
+<div class="col-sm-4">
+  <div class="product-image-wrapper">
+    <div class="single-products">
+      <div class="productinfo text-center">
+        <img src="/media/{{product.image.0}}" alt="" />
+        <h2>${{product.price}}</h2>
+        <p>{{product.name}}</p>
+
+        <a href="#" class="btn btn-default add-to-cart"
+          ><i class="fa fa-shopping-cart"></i>Add to cart</a
+        >
+      </div>
+      <div class="product-overlay">
+        <div class="overlay-content">
+          <h2>${{product.price}}</h2>
+          <a href="{% url 'product:product_detail' product.id %}"
+            >{{product.name}}</a
+          >
+          <a href="#" class="btn btn-default add-to-cart"
+            ><i class="fa fa-shopping-cart"></i>Add to cart</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="choose">
+      <ul class="nav nav-pills nav-justified">
+        <li>
+          <a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a>
+        </li>
+        <li>
+          <a href="#"><i class="fa fa-plus-square"></i>Add to compare</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+{%endfor%} {% endblock %}

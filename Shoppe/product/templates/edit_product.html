@@ -25,6 +25,17 @@
                   multiple
                 />
               </p>
+              <div style="display: flex;">
+              {% for image in product.image %}
+              <div style="display: block; padding-right: 30px;">
+                <img src="/media/{{image}}" alt="" style="height: 30px;width: 30px;"><br>
+                <input type="checkbox" id="hinhxoa_{{forloop.counter}}" name="image_delete" value="{{image}}">
+                </div>
+              {% endfor %}
+              </div>
+              <span>Chọn hình ảnh muốn xóa
+              </span>
+
               {% for error in image_err %}
                 <span style="color: red; display: block;">
                   {{ error }}
@@ -67,8 +78,12 @@
       success:function(data){
         if(data.success){
           alert('chỉnh sửa thành công')
+          alert(data.image_delete)
           window.location.href = data.redirect_url
+        }else{
+          alert(data.err)
         }
+
       }
     });
   });

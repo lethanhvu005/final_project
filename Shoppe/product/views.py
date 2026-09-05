@@ -4,7 +4,7 @@ from django.core.files.storage import default_storage
 from django import views
 from django.http import JsonResponse
 from django.urls import reverse
-from .models import Product
+from .models import Product,Brand
 from .forms import ProductForm
 def myProduct(request):
     products = Product.objects.all()
@@ -30,7 +30,7 @@ def addProduct(request):
                 path =default_storage.save('product/'+image.name,image)
                 image_paths.append(path)
             product = add_form.save(commit=False)
-            product.image = image_paths[0]
+            product.image = image_paths
             product.save()
             return JsonResponse({'success':'Tạo thành công',"redirect_url": reverse("product:my_product")})   
     else:
@@ -52,17 +52,46 @@ def editProduct(request,id):
                 image_err.append(f"{image.name}cần nhỏ hơn 1 MB") 
         if product_edit.is_valid() and not image_err:
             image_paths =[]
+            image_delete = request.POST.getlist('image_delete')
+            image_old = product.image or []
+            if isinstance(image_old, str):
+                image_old = [image_old]
+            else:
+                image_old = list(image_old)
+            image_delete=[
+                path
+                for path in image_delete
+                if path in image_old
+            ]
+            remaining_images =[
+                path 
+                for path in image_old
+                if path not in image_delete
+            ]
+            total_images = len(remaining_images)+len(images)
             product = product_edit.save(commit=False)
-            for image in images:
-                path =default_storage.save('product/'+image.name,image)
-                image_paths.append(path)
-            product.image = image_paths
-            product.save()
-            return JsonResponse({'success':'Tạo thành công',"redirect_url": reverse("product:my_product")})   
+            if total_images >3:
+                return JsonResponse({'err':'Chỉ nhận tối đa ba ảnh',})   
+            else:
+                for image in images:
+                    path =default_storage.save('product/'+image.name,image)
+                    image_paths.append(path)
+                image_new = remaining_images + image_paths
+                product.image = image_new
+                product.save( )
+                for path in image_delete:
+                    if default_storage.exists(path):
+                        default_storage.delete(path)
+                return JsonResponse({
+                "success": True,
+                "redirect_url": reverse("product:my_product"),})
     else:
         product_edit=ProductForm(instance=product)
     return render(request,'edit_product.html', {'product_edit':product_edit,'image_err':image_err,'product':product})
-def deleteProduct(request,id):
+def deleteProduct(id):
     product= get_object_or_404(Product,id=id)
     product.delete()
     return redirect('product:my_product')
+def productDetail(request,id):
+    product = get_object_or_404(Product,id=id)
+    return render(request,'product_detail.html',{'product':product,})
