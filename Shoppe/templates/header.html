@@ -97,9 +97,29 @@
                   ><i class="fa fa-crosshairs"></i> Checkout</a
                 >
               </li>
-              <li>
-                <a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a>
-              </li>
+<li>
+  <a href="{% url 'cart:cart_main' %}" style="position: relative;">
+    <i class="fa fa-shopping-cart"></i>
+    Cart
+
+    <span id="cart-count"
+          style="
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: red;
+            color: white;
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            line-height: 16px;
+            text-align: center;
+            border-radius: 50%;
+          ">
+      {{request.session.count_cart|default:0}}
+    </span>
+  </a>
+</li>
               <li>
               {% if request.user.is_authenticated %}
                  <li>

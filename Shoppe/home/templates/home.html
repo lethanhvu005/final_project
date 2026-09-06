@@ -48,7 +48,9 @@
 >
   <i class="fa fa-angle-right"></i>
 </a>
-{% endblock %} {% block content %} {% for product in products%}
+{% endblock %} {% block content %}
+<h2 class="title text-center">Features Items</h2>
+{% for product in products%}
 <div class="col-sm-4">
   <div class="product-image-wrapper">
     <div class="single-products">
@@ -64,12 +66,26 @@
       <div class="product-overlay">
         <div class="overlay-content">
           <h2>${{product.price}}</h2>
-          <a href="{% url 'product:product_detail' product.id %}"
-            >{{product.name}}</a
+          <a
+            class="detail"
+            href="{% url 'product:product_detail' product.id %} "
+          ></a>
+          <p>{{product.name}}</p>
+          {% if user.is_authenticated %}
+          <a
+            href="#"
+            class="btn btn-default add-to-cart"
+            data-id="{{ product.id }}"
           >
-          <a href="#" class="btn btn-default add-to-cart"
-            ><i class="fa fa-shopping-cart"></i>Add to cart</a
-          >
+            <i class="fa fa-shopping-cart"></i>
+            Add to cart
+          </a>
+          {% else %}
+          <a href="{% url 'users:LoginUser' %}" class="btn btn-default">
+            <i class="fa fa-lock"></i>
+            Đăng nhập thêm vào giỏ hàng
+          </a>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -85,4 +101,39 @@
     </div>
   </div>
 </div>
-{%endfor%} {% endblock %}
+{%endfor%}
+<script>
+  $(document).ready(function () {
+    $(".product-overlay").click(function (e) {
+      $addPrd = $(e.target).closest(".add-to-cart");
+      if ($addPrd.length > 0) {
+        e.preventDefault();
+        let idPrd = $addPrd.data("id");
+        $.ajax({
+          type: "POST",
+          url: "{% url 'home' %}",
+          data: {
+            id: idPrd,
+          },
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+          },
+          success: function (data) {
+            if (data.success) {
+              $("#cart-count").text(data.count);
+            } else {
+              alert(data.error);
+            }
+          },
+        });
+
+        return;
+      }
+      let href = $(this).find(".detail").attr("href");
+      if (href) {
+        window.location.href = href;
+      }
+    });
+  });
+</script>
+{% endblock %}
