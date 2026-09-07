@@ -4,8 +4,9 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from product.models import Product
 from django.http import JsonResponse
+
 @login_required
-def Cart(request):
+def get_cart(request):
     cart = request.session.get('cart',{})
     products=[]
     cart_total=0
@@ -18,7 +19,15 @@ def Cart(request):
             'quantity':item['quantity'] ,
             'total':total,
         })
+    return products , cart_total
+@login_required
+def main_cart(request):
+    products , cart_total = get_cart(request)
     return render(request,'cart.html',{'products':products,'cart_total':cart_total})
+@login_required
+def checkout(request):
+    products , cart_total = get_cart(request)
+    return render(request,'checkout.html',{'products':products,'cart_total':cart_total})
 def Quantity(request):
     if request.method == 'POST':
         idPrd = request.POST.get('idPrd')
