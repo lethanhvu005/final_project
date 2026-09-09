@@ -1,0 +1,325 @@
+```django
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Xác nhận đơn hàng</title>
+  </head>
+
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #f4f5f7;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #363432;
+    "
+  >
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      style="width: 100%; background-color: #f4f5f7"
+    >
+      <tr>
+        <td align="center" style="padding: 30px 12px">
+          <table
+            role="presentation"
+            width="620"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="
+              width: 100%;
+              max-width: 620px;
+              background-color: #ffffff;
+              border-radius: 10px;
+              overflow: hidden;
+              box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+            "
+          >
+            <tr>
+              <td
+                align="center"
+                style="
+                  padding: 28px 20px;
+                  background-color: #fe980f;
+                  color: #ffffff;
+                "
+              >
+                <div
+                  style="
+                    font-size: 28px;
+                    font-weight: bold;
+                    letter-spacing: 1px;
+                  "
+                >
+                  E-SHOPPER
+                </div>
+
+                <div style="margin-top: 7px; font-size: 14px; color: #fff4e5">
+                  Xác nhận đơn hàng
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 32px 28px 15px">
+                <h1
+                  style="
+                    margin: 0 0 12px;
+                    color: #363432;
+                    font-size: 23px;
+                    line-height: 1.4;
+                  "
+                >
+                  Chào {{ name }}!
+                </h1>
+
+                <p
+                  style="
+                    margin: 0 0 24px;
+                    color: #696763;
+                    font-size: 15px;
+                    line-height: 1.7;
+                  "
+                >
+                  Cảm ơn bạn đã đặt hàng tại E-Shopper. Chúng tôi đã nhận được
+                  đơn hàng và đang chuẩn bị các sản phẩm dưới đây.
+                </p>
+
+                <table
+                  role="presentation"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="
+                    width: 100%;
+                    border-collapse: collapse;
+                    border: 1px solid #e8e8e5;
+                  "
+                >
+                  <thead>
+                    <tr style="background-color: #fff4e5">
+                      <th
+                        align="left"
+                        style="
+                          padding: 13px 10px;
+                          border-bottom: 1px solid #e8e8e5;
+                          color: #595752;
+                          font-size: 13px;
+                        "
+                      >
+                        Sản phẩm
+                      </th>
+
+                      <th
+                        align="right"
+                        style="
+                          padding: 13px 10px;
+                          border-bottom: 1px solid #e8e8e5;
+                          color: #595752;
+                          font-size: 13px;
+                        "
+                      >
+                        Giá
+                      </th>
+
+                      <th
+                        align="center"
+                        style="
+                          padding: 13px 10px;
+                          border-bottom: 1px solid #e8e8e5;
+                          color: #595752;
+                          font-size: 13px;
+                        "
+                      >
+                        SL
+                      </th>
+
+                      <th
+                        align="right"
+                        style="
+                          padding: 13px 10px;
+                          border-bottom: 1px solid #e8e8e5;
+                          color: #595752;
+                          font-size: 13px;
+                        "
+                      >
+                        Thành tiền
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {% for item in product %}
+                    <tr>
+                      <td
+                        style="
+                          padding: 15px 10px;
+                          border-bottom: 1px solid #e8e8e5;
+                          color: #363432;
+                          font-size: 14px;
+                          line-height: 1.5;
+                        "
+                      >
+                        <strong>{{ item.prd.name }}</strong>
+
+                        <br />
+
+                        <span style="color: #999791; font-size: 12px">
+                          Mã sản phẩm: {{ item.prd.id }}
+                        </span>
+                      </td>
+
+                      <td
+                        align="right"
+                        style="
+                          padding: 15px 10px;
+                          border-bottom: 1px solid #e8e8e5;
+                          color: #696763;
+                          font-size: 14px;
+                          white-space: nowrap;
+                        "
+                      >
+                        ${{ item.prd.price }}
+                      </td>
+
+                      <td
+                        align="center"
+                        style="
+                          padding: 15px 10px;
+                          border-bottom: 1px solid #e8e8e5;
+                          color: #696763;
+                          font-size: 14px;
+                        "
+                      >
+                        {{ item.quantity }}
+                      </td>
+
+                      <td
+                        align="right"
+                        style="
+                          padding: 15px 10px;
+                          border-bottom: 1px solid #e8e8e5;
+                          color: #fe980f;
+                          font-size: 14px;
+                          font-weight: bold;
+                          white-space: nowrap;
+                        "
+                      >
+                        ${{ item.total }}
+                      </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                      <td
+                        colspan="4"
+                        align="center"
+                        style="
+                          padding: 25px 10px;
+                          color: #999791;
+                          font-size: 14px;
+                        "
+                      >
+                        Không có sản phẩm trong đơn hàng.
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+
+                <table
+                  role="presentation"
+                  width="100%"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  style="width: 100%; margin-top: 18px"
+                >
+                  <tr>
+                    <td
+                      align="right"
+                      style="
+                        padding: 16px;
+                        background-color: #f8f8f6;
+                        color: #696763;
+                        font-size: 15px;
+                      "
+                    >
+                      Tổng thanh toán:
+
+                      <strong
+                        style="
+                          margin-left: 10px;
+                          color: #fe980f;
+                          font-size: 21px;
+                        "
+                      >
+                        ${{ cart_total }}
+                      </strong>
+                    </td>
+                  </tr>
+                </table>
+
+                <div
+                  style="
+                    margin-top: 24px;
+                    padding: 16px 18px;
+                    background-color: #f1faf4;
+                    border-left: 4px solid #55a66f;
+                    color: #55705e;
+                    font-size: 14px;
+                    line-height: 1.7;
+                  "
+                >
+                  Đơn hàng của bạn đang được xử lý. E-Shopper sẽ liên hệ nếu cần
+                  thêm thông tin giao hàng.
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 15px 28px 30px">
+                <p
+                  style="
+                    margin: 0;
+                    color: #696763;
+                    font-size: 14px;
+                    line-height: 1.7;
+                  "
+                >
+                  Trân trọng,
+
+                  <br />
+
+                  <strong style="color: #363432"> Đội ngũ E-Shopper </strong>
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td
+                align="center"
+                style="
+                  padding: 18px 20px;
+                  background-color: #363432;
+                  color: #b9b7b3;
+                  font-size: 12px;
+                  line-height: 1.6;
+                "
+              >
+                Đây là email xác nhận tự động. Vui lòng không trả lời email này.
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+```

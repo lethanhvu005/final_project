@@ -4,5 +4,7 @@ app_name='cart'
 urlpatterns = [
     path('',views.main_cart,name='cart_main'),
     path('checkout/',views.checkout,name='checkout'),
-    path('prdUp/',views.Quantity,name='prdUp')
+    path('prdUp/',views.Quantity,name='prdUp'),
+    path('send_mail/',views.send_email,name='send_email'),
+
 ]

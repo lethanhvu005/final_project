@@ -1,9 +1,15 @@
+import email
+import html
 import re
 
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
 from product.models import Product
 from django.http import JsonResponse
+from users.models import UserCustomer
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.conf import settings
 
 @login_required
 def get_cart(request):
@@ -61,3 +67,25 @@ def Quantity(request):
             quantity = cart[id]['quantity']
         return JsonResponse({'success':'Thành công','quantity':quantity,'total':total,'cart_total':cart_total})
     return JsonResponse({'error':'Lỗi'})
+def send_email(request):
+    if request.method == 'POST':
+        name = request.user.username
+        email = request.user.email
+        product , cart_total = get_cart(request)
+        if not product:
+            return JsonResponse({'err':'Không có sản phẩm nào để order'})
+        if not email :
+            return JsonResponse({'err':'Không có email người nhận'})
+        subject = "Chào mừng bạn đến với website của vule"
+        from_email = settings.DEFAULT_FROM_EMAIL
+        to =[email]
+        text_content = f'Chào mừng {name} đến với website của chúng tôi'
+        html_content= render_to_string('email/welcome_email.html',{'name':name,'product':product,'cart_total':cart_total})
+        msg = EmailMultiAlternatives(subject,text_content,from_email, to)
+        msg.attach_alternative(html_content,'text/html')
+        msg.send()
+        return JsonResponse({
+        "success": True,
+        "url": "/",
+        })
+    return render(request,'welcome_email.html',{'name':name,'product':product,'cart_total':cart_total})

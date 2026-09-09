@@ -225,7 +225,14 @@ a#scrollUp i {
 .navbar-collapse.collapse {
     padding-left: 0;
 }
-
+.order_bt{
+    background: #FE980F;
+    border-radius: 0;
+    color: #FFFFFF;
+    margin-top: 18px;
+    border: none;
+    padding: 5px 15px;
+}
 .mainmenu ul li {
     padding-right: 15px;
     padding-left: 15px;
@@ -1769,6 +1776,10 @@ textarea {
 .check_out {
     margin-left: 20px
 }
+.order_bt {
+    margin-left: 20px
+}
+
 
 
 /*************************
