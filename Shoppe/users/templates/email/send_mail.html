@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đặt lại mật khẩu</title>
+  </head>
+
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #f4f5f7;
+      font-family: Arial, Helvetica, sans-serif;
+      color: #363432;
+    "
+  >
+    <table
+      role="presentation"
+      width="100%"
+      cellpadding="0"
+      cellspacing="0"
+      border="0"
+      style="width: 100%; background-color: #f4f5f7"
+    >
+      <tr>
+        <td align="center" style="padding: 40px 12px">
+          <table
+            role="presentation"
+            width="620"
+            cellpadding="0"
+            cellspacing="0"
+            border="0"
+            style="
+              width: 100%;
+              max-width: 620px;
+              background-color: #ffffff;
+              border-radius: 12px;
+              overflow: hidden;
+              box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            "
+          >
+            <tr>
+              <td
+                align="center"
+                style="
+                  padding: 32px 20px;
+                  background-color: #fe980f;
+                  color: #ffffff;
+                "
+              >
+                <div
+                  style="
+                    font-size: 30px;
+                    font-weight: bold;
+                    letter-spacing: 1px;
+                  "
+                >
+                  E-SHOPPER
+                </div>
+
+                <div style="margin-top: 8px; font-size: 14px; color: #fff3e0">
+                  Yêu cầu đặt lại mật khẩu
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td style="padding: 38px 32px 20px">
+                <h1
+                  style="
+                    margin: 0 0 16px;
+                    color: #363432;
+                    font-size: 24px;
+                    line-height: 1.4;
+                  "
+                >
+                  Xin chào {{ name }} với email {{email}}!
+                </h1>
+
+                <p
+                  style="
+                    margin: 0 0 14px;
+                    color: #696763;
+                    font-size: 15px;
+                    line-height: 1.7;
+                  "
+                >
+                  Chúng tôi nhận được yêu cầu đặt lại mật khẩu cho tài khoản của
+                  bạn.
+                </p>
+
+                <p
+                  style="
+                    margin: 0 0 28px;
+                    color: #696763;
+                    font-size: 15px;
+                    line-height: 1.7;
+                  "
+                >
+                  Nhấn vào nút bên dưới để tạo mật khẩu mới.
+                </p>
+
+                <table
+                  role="presentation"
+                  cellpadding="0"
+                  cellspacing="0"
+                  border="0"
+                  align="center"
+                >
+                  <tr>
+                    <td
+                      align="center"
+                      bgcolor="#fe980f"
+                      style="border-radius: 6px"
+                    >
+                      <a
+                        href="{{reset_url}}"
+                        style="
+                          display: inline-block;
+                          padding: 14px 30px;
+                          font-size: 15px;
+                          font-weight: bold;
+                          color: #ffffff;
+                          text-decoration: none;
+                        "
+                        id="change_password"
+                      >
+                        Đặt lại mật khẩu
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+
+                <div
+                  style="
+                    margin-top: 30px;
+                    padding: 16px;
+                    background-color: #fff8ef;
+                    border-left: 4px solid #fe980f;
+                    color: #696763;
+                    font-size: 14px;
+                    line-height: 1.6;
+                  "
+                >
+                  Nếu bạn không yêu cầu đổi mật khẩu, bạn có thể bỏ qua email
+                  này. Mật khẩu hiện tại của bạn sẽ không bị thay đổi.
+                </div>
+
+                <p
+                  style="
+                    margin: 26px 0 8px;
+                    color: #999999;
+                    font-size: 12px;
+                    line-height: 1.6;
+                  "
+                >
+                  Nếu nút phía trên không hoạt động, hãy sao chép đường dẫn sau
+                  và mở trong trình duyệt:
+                </p>
+
+                <p style="margin: 0; font-size: 12px; word-break: break-all">
+                  <a
+                    href="{{reset_url}}"
+                    style="color: #fe980f; text-decoration: none"
+                  >
+                    {{reset_url}}
+                  </a>
+                </p>
+              </td>
+            </tr>
+
+            <tr>
+              <td
+                align="center"
+                style="
+                  padding: 24px 20px;
+                  background-color: #fafafa;
+                  border-top: 1px solid #eeeeee;
+                  color: #999999;
+                  font-size: 12px;
+                  line-height: 1.6;
+                "
+              >
+                © E-SHOPPER<br />
+                Email này được gửi tự động, vui lòng không trả lời trực tiếp.
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

@@ -10,6 +10,7 @@ from users.models import UserCustomer
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
+from cart.models import History
 
 @login_required
 def get_cart(request):
@@ -76,6 +77,13 @@ def send_email(request):
             return JsonResponse({'err':'Không có sản phẩm nào để order'})
         if not email :
             return JsonResponse({'err':'Không có email người nhận'})
+        history = History.objects.create(
+        user=request.user,
+        email=request.user.email,
+        name=request.user.username,
+        phone=request.user.phone,
+        price=cart_total,
+        )
         subject = "Chào mừng bạn đến với website của vule"
         from_email = settings.DEFAULT_FROM_EMAIL
         to =[email]
@@ -84,6 +92,8 @@ def send_email(request):
         msg = EmailMultiAlternatives(subject,text_content,from_email, to)
         msg.attach_alternative(html_content,'text/html')
         msg.send()
+        request.session["cart"] = {}
+        request.session["count_cart"] = 0
         return JsonResponse({
         "success": True,
         "url": "/",

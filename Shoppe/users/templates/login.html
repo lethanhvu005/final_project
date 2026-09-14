@@ -5,6 +5,7 @@
     <h2>Login to your account</h2>
     <form method="POST">
       {% csrf_token %} {{form.as_p}}
+      <span><a href="{% url 'users:Forgot_password' %}">Quên mật khẩu</a></span><br>
       <span>
         <input type="checkbox" class="checkbox" />
         Keep me signed in

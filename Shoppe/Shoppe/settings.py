@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'users',
     'country',
     'cart',
+    'shop',
     
     
 ]

@@ -8,3 +8,9 @@ class Cart(models.Model):
     quantity = models.IntegerField(default=0, blank=True, null=True)
     class Meta:
         db_table='Cart'
+class History(models.Model):
+    email = models.EmailField(blank=True,null=True)
+    phone = models.IntegerField(max_length=10,blank=True,null=True)
+    name = models.TextField(blank=True,null=True)
+    user = models.ForeignKey(UserCustomer,on_delete=SET_NULL,blank=True,null=True)
+    price = models.FloatField(blank=True,null=True)

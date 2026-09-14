@@ -50,59 +50,9 @@
 </a>
 {% endblock %} {% block content %}
 <h2 class="title text-center">Features Items</h2>
-{% for product in products%}
-<div class="col-sm-4">
-  <div class="product-image-wrapper">
-    <div class="single-products">
-      <div class="productinfo text-center">
-        <img src="/media/{{product.image.0}}" alt="" />
-        <h2>${{product.price}}</h2>
-        <p>{{product.name}}</p>
-
-        <a href="#" class="btn btn-default add-to-cart"
-          ><i class="fa fa-shopping-cart"></i>Add to cart</a
-        >
-      </div>
-      <div class="product-overlay">
-        <div class="overlay-content">
-          <h2>${{product.price}}</h2>
-          <a
-            class="detail"
-            href="{% url 'product:product_detail' product.id %} "
-          ></a>
-          <p>{{product.name}}</p>
-          {% if user.is_authenticated %}
-          <a
-            href="#"
-            class="btn btn-default add-to-cart"
-            data-id="{{ product.id }}"
-          >
-            <i class="fa fa-shopping-cart"></i>
-            Add to cart
-          </a>
-          {% else %}
-          <a href="{% url 'users:LoginUser' %}" class="btn btn-default">
-            <i class="fa fa-lock"></i>
-            Đăng nhập thêm vào giỏ hàng
-          </a>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-    <div class="choose">
-      <ul class="nav nav-pills nav-justified">
-        <li>
-          <a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a>
-        </li>
-        <li>
-          <a href="#"><i class="fa fa-plus-square"></i>Add to compare</a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
-{%endfor%}
-<script>
+<div id="shop-product-list">
+  {% include "product_list.html" %}
+</div><script>
   $(document).ready(function () {
     $(".product-overlay").click(function (e) {
       $addPrd = $(e.target).closest(".add-to-cart");
@@ -133,6 +83,29 @@
       if (href) {
         window.location.href = href;
       }
+    });
+    $("#sl2").on("slideStop", function (e) {
+      e.preventDefault();
+      let val = $(".tooltip-inner").text();
+      let arr = val.split(":");
+      let min = parseInt(arr[0]);
+      let max = parseInt(arr[1]);
+      $.ajax({
+        type: "POST",
+        headers: {
+          "X-CSRFToken": "{{csrf_token}}",
+        },
+        data: {
+          min: min,
+          max: max,
+        },
+        url: "{% url 'search_price' %}",
+        success: function (data) {
+          if (data.success) {
+            $("#shop-product-list").html(data.html);
+          }
+        },
+      });
     });
   
   });

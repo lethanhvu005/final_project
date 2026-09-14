@@ -163,7 +163,7 @@
           </div>
           {% block 'menu_left' %} {% include 'menu_left.html' %} {% endblock %}
         </div>
-        <form method="GET" action="{% url 'home' %}">
+        <form method="GET" action="{{search_url}}">
           <div class="col-sm-3">
             <div class="search_box pull-right">
               <input type="text" name="q" value="{{request.GET.q}}" placeholder="Search" />

@@ -8,3 +8,15 @@ class AdminBrand(admin.ModelAdmin):
 class AdminCategory(admin.ModelAdmin):
     list_display=(
         'name',)
+@admin.register(Product)
+class AdminProduct(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'name',
+        'price',
+        'category',
+        'brand',
+        'status',
+    )
+
+    search_fields = ('name',)

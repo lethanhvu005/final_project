@@ -1,3 +1,11 @@
 from django.contrib import admin
-
-# Register your models here.
+from .models import UserCustomer
+@admin.register(UserCustomer)
+class Admin(admin.ModelAdmin):
+    list_display =(
+        'password',
+        'is_superuser',
+        'username',
+        'email',
+    )
+    
