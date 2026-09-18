@@ -6,6 +6,49 @@ from django.http import JsonResponse
 from django.urls import reverse
 from .models import Product,Brand
 from .forms import ProductForm
+from rest_framework.decorators import api_view,authentication_classes,permission_classes
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import ProductSerializers
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
+@api_view(['GET'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
+def prd_api_list(request):
+    if request.method == 'GET':
+        prd = Product.objects.all()
+        serializers = ProductSerializers(prd,many=True)
+    return Response(serializers.data)
+@api_view(['POST'])
+def prd_add(request):
+    form = ProductForm(request.POST)
+    images = request.FILES.getlist('images')
+
+    if not form.is_valid():
+        return Response(form.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    if not images:
+        return Response(
+            {'images': ['Cần chọn ít nhất một ảnh.']},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    image_paths = []
+    for image in images:
+        path = default_storage.save('product/' + image.name, image)
+        image_paths.append(path)
+
+    product = form.save(commit=False)
+    product.image = image_paths
+    product.save()
+
+    return Response(
+        ProductSerializers(product).data,
+        status=status.HTTP_201_CREATED,
+    )
+
 def myProduct(request):
     products = Product.objects.all()
     return render(request,'my_product.html',{'products':products})
@@ -36,6 +79,55 @@ def addProduct(request):
     else:
         add_form=ProductForm()
     return render(request,'add_product.html',{'add_form':add_form,'image_err':image_err,})
+@api_view(['POST'])
+def edit_prd(request,id):
+    product = get_object_or_404(Product,id=id)
+    image_err =[]
+    if request.method == 'POST':
+        product_edit = ProductForm(request.POST,instance=product,)
+        images = request.FILES.getlist('images')
+        if len(images) > 3:
+            return Response({'image_err':['Chọn tối đa ba ảnh']},status=status.HTTP_404_BAD_REQUEST)
+        type_image =['image/jpeg', 'image/png','image/jpg']
+        for image in images:
+            if image.content_type not in type_image:
+                return Response({'image_err':['Chỉ nhận file jpeg ,png ,jpg']},status=status.HTTP_404_BAD_REQUEST)
+            if image.size >= 1024 *1024:
+                return Response({'image_err':[f"{image.name}cần nhỏ hơn 1 MB"]},status=status.HTTP_404_BAD_REQUEST)
+        if product_edit.is_valid() and not image_err:
+            image_paths =[]
+            image_delete = request.POST.getlist('image_delete')
+            image_old = product.image or []
+            if isinstance(image_old, str):
+                image_old = [image_old]
+            else:
+                image_old = list(image_old)
+            image_delete=[
+                path
+                for path in image_delete
+                if path in image_old
+            ]
+            remaining_images =[
+                path 
+                for path in image_old
+                if path not in image_delete
+            ]
+            total_images = len(remaining_images)+len(images)
+            product = product_edit.save(commit=False)
+            if total_images >3:
+                return Response({'err':['Chỉ nhận tối đa ba ảnh'],},status=status.HTTP_404_BAD_REQUEST)   
+            else:
+                for image in images:
+                    path =default_storage.save('product/'+image.name,image)
+                    image_paths.append(path)
+                image_new = remaining_images + image_paths
+                product.image = image_new
+                product.save( )
+                for path in image_delete:
+                    if default_storage.exists(path):
+                        default_storage.delete(path)
+                return Response(ProductSerializers(product).data,status=status.HTTP_200_OK)
+
 def editProduct(request,id):
     product = get_object_or_404(Product,id=id)
     image_err =[]

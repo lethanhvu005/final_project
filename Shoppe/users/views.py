@@ -1,10 +1,17 @@
+from tokenize import Token
+
 from django.contrib import messages
+from django.contrib.messages import api
 from django.shortcuts import render ,redirect
 from django.contrib.auth import login ,logout,update_session_auth_hash
 from django.urls import reverse 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.authtoken.models import Token
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -16,6 +23,15 @@ from django.utils.http import (
     urlsafe_base64_encode,
     urlsafe_base64_decode,
 )
+@api_view(['POST'])
+def RegisterApi(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+    if UserCustomer.objects.filter(username=username).exists():
+        return Response({'err':'Tài khoản đã tộn tại'},status=400)
+    user = UserCustomer.objects.create(username=username,password=password)
+    token , created = Token.objects.get_or_create(user=user)
+    return Response({'success':'done','token':token.key}, status=201)
 def RegisterUser(request):
     if request.method == 'POST':
         form = UserForm(request.POST,request.FILES)
@@ -29,6 +45,19 @@ def RegisterUser(request):
     else:
         form = UserForm()
     return render(request, 'register.html',{'form':form})
+@api_view(['POST'])
+def LoginApi(request):
+    form = AuthenticationForm(request, data = request.POST)
+    if form.is_valid():
+        user = form.get_user()
+        login(request,user)
+        if request.user.is_staff:
+            token , created = Token.objects.get_or_create(user=user)
+            return Response({'staff':'admin','token':token.key},status=201)  
+        else:
+            token , created = Token.objects.get_or_create(user=user)
+            return Response({'staff':'user','token':token.key},status=201)
+    return Response({'err':'thông tin k hợp lệ'},status=404)
 def LoginUser(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data = request.POST)
@@ -42,6 +71,10 @@ def LoginUser(request):
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form':form})
+@api_view(['POST'])
+def LogoutApi(request):
+    request.user.auth_token.delete()
+    return Response({'success':'Logout done'},status=201)
 def LogoutUser(request):
     logout(request)
     return redirect('home')
